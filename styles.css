@@ -1,0 +1,23 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.board{
+
+    height: 80%;
+    width: 80%;
+    background-color: lightblue;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.cell{
+
+    height: 100px;
+    width: 100px;
+    background-color: beige;
+    border: 1px solid black;
+}
