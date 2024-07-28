@@ -103,11 +103,37 @@ let board = [
 // place some random values first
 board = seed(board, 8);
 
+if(!step_up(board)){
 
+  let board = [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 6, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 3, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 5, 0, 0],
+    [0, 0, 0, 0, 9, 0, 0, 0, 0],
+  ];
 
-step_up(board);
+  // place some random values first
+board = seed(board, 8);
+
+  step_up(board);
+
+}
 
 for(let row of board){
     const row_str = row.join(' ');
     console.log(row_str);
 }
+
+const div_board = document.getElementById('board'); // Corrected line
+
+for (let i = 0; i < 81; i++) {
+    let cell = document.createElement('div');
+    cell.classList.add('cell');
+    div_board.appendChild(cell);
+}
+

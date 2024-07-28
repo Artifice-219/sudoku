@@ -4,20 +4,31 @@
     box-sizing: border-box;
 }
 
+body{
+
+    display: flex;
+    justify-content: center;
+}
+
 .board{
 
+    position: absolute;
+    top: 100px;
+    right: 5%;
     height: 80%;
-    width: 80%;
+    width: 60%;
     background-color: lightblue;
     padding: 10px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .cell{
 
-    height: 100px;
-    width: 100px;
-    background-color: beige;
+    height: 11%;
+    width: 6%;
+    background-color: lightcoral;
     border: 1px solid black;
+    margin: 10px;
+    border-radius: 10px;
 }
