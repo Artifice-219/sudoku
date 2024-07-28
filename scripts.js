@@ -1,28 +1,57 @@
+function step_up(array, row = 0, col = 0) {
+  // Define a base case
+  if (row === 9) {
+    console.log(`Recursion finished`);
+    return true; // Solution found
+  }
 
-let choices_array = [1,2,3,4,5,6,7,8,9]
+  if (col === 9) {
+    // console.log(`Moving to the next row`);
+    return step_up(array, row + 1, 0); // Move to the next row
+  }
 
-function choice(){
-  let random_index = Math.floor(Math.random() * choices_array.length);
-  return choices_array[random_index];
+  if (array[row][col] !== 0) {
+    // console.log(`Skipping non-empty cell`);
+    return step_up(array, row, col + 1); // Skip filled cells
+  }
+
+  for (let number = 1; number <= 9; number++) {
+    if (isValid(array, row, col, number)) {
+      // console.log(`Trying to place ${number} at (${row}, ${col})`);
+      array[row][col] = number; // Assign the number
+
+      if (step_up(array, row, col + 1)) {
+        return true; // Move to the next cell
+      }
+
+      // console.log(`Backtracking from (${row}, ${col})`);
+      array[row][col] = 0; // Backtrack if no solution found
+    }
+  }
+
+  return false; // No solution found
 }
 
-function assign(array, row, col, number){
-  // only call this when the to be assigned number is valid
-  array[row][col] = number;
+function isValid(array, row, col, number) {
+  return (
+    row_check(array, number, row) &&
+    col_check(array, number, col) &&
+    sub_grid_check(array, number, row, col)
+  );
 }
 
-function col_check(array, number,col) {
+function row_check(array, number, row) {
   for (let i = 0; i < 9; i++) {
-    if (array[i][col] === number) {
+    if (array[row][i] === number) {
       return false;
     }
   }
   return true;
 }
 
-function row_check(array, number, row) {
-  for (let i = 0; i <= 8; i++) {
-    if (array[row][i] === number) {
+function col_check(array, number, col) {
+  for (let i = 0; i < 9; i++) {
+    if (array[i][col] === number) {
       return false;
     }
   }
@@ -42,38 +71,43 @@ function sub_grid_check(array, number, row, col) {
   return true;
 }
 
+function seed(array, limiter = 2){
+  // this function will put "seed" values at random position in the array
+  for(let i=0; i<=limiter; i++){
+    let row = Math.floor(Math.random() * 9);
+    let col = Math.floor(Math.random() * 9);
+    let number = Math.floor(Math.random() * 9);
 
- let board = [
-  [5, 3, 0, 0, 7, 0, 0, 0, 0],
-  [6, 0, 0, 1, 9, 5, 0, 0, 0],
-  [0, 9, 8, 0, 0, 0, 0, 6, 0],
-  [8, 0, 0, 0, 6, 0, 0, 0, 3],
-  [4, 0, 0, 8, 0, 3, 0, 0, 1],
-  [7, 0, 0, 0, 2, 0, 0, 0, 6],
-  [0, 6, 0, 0, 0, 0, 2, 8, 0],
-  [0, 0, 0, 4, 1, 9, 0, 0, 5],
-  [0, 0, 0, 0, 8, 0, 0, 7, 9]
-];
-
-let failed_choices = [];
-
-
-function make_choice(board){
-  let number = choice()
-  console.log(`make choice number is ${number}`);
-
- for(let row=0; row< 9; row++){
-  for(let col=0; col< 9; col++){
-    if(col_check(board, number,col) && row_check(board, number, row), sub_grid_check(board, number, row, col)){
-     assign(board, row, col, number)
+    // check for validity before assigning
+    if(isValid(array, row, col, number)){
+      array[row][col] = number;
     }
-    else{
-      failed_choices.push(number);
-    }
+
   }
- }
+
+  return array;
 }
 
-make_choice(board);
+let board = [
+  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 5, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+];
 
-console.log(board);
+// place some random values first
+board = seed(board, 8);
+
+
+
+step_up(board);
+
+for(let row of board){
+    const row_str = row.join(' ');
+    console.log(row_str);
+}
