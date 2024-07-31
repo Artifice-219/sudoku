@@ -6,25 +6,21 @@ function step_up(array, row = 0, col = 0) {
   }
 
   if (col === 9) {
-    // console.log(`Moving to the next row`);
     return step_up(array, row + 1, 0); // Move to the next row
   }
 
   if (array[row][col] !== 0) {
-    // console.log(`Skipping non-empty cell`);
     return step_up(array, row, col + 1); // Skip filled cells
   }
 
   for (let number = 1; number <= 9; number++) {
     if (isValid(array, row, col, number)) {
-      // console.log(`Trying to place ${number} at (${row}, ${col})`);
       array[row][col] = number; // Assign the number
 
       if (step_up(array, row, col + 1)) {
         return true; // Move to the next cell
       }
 
-      // console.log(`Backtracking from (${row}, ${col})`);
       array[row][col] = 0; // Backtrack if no solution found
     }
   }
@@ -71,18 +67,15 @@ function sub_grid_check(array, number, row, col) {
   return true;
 }
 
-function seed(array, limiter = 2){
-  // this function will put "seed" values at random position in the array
-  for(let i=0; i<=limiter; i++){
+function seed(array, limiter = 2) {
+  for (let i = 0; i <= limiter; i++) {
     let row = Math.floor(Math.random() * 9);
     let col = Math.floor(Math.random() * 9);
-    let number = Math.floor(Math.random() * 9);
+    let number = Math.floor(Math.random() * 9) + 1; 
 
-    // check for validity before assigning
-    if(isValid(array, row, col, number)){
+    if (isValid(array, row, col, number)) {
       array[row][col] = number;
     }
-
   }
 
   return array;
@@ -100,12 +93,11 @@ let board = [
   [0, 0, 0, 0, 0, 0, 0, 0, 0],
 ];
 
-// place some random values first
+// Place some random values first
 board = seed(board, 8);
 
-if(!step_up(board)){
-
-  let board = [
+if (!step_up(board)) {
+  board = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 6, 0],
@@ -117,23 +109,42 @@ if(!step_up(board)){
     [0, 0, 0, 0, 9, 0, 0, 0, 0],
   ];
 
-  // place some random values first
-board = seed(board, 8);
+  board = seed(board, 8);
 
   step_up(board);
-
 }
 
-for(let row of board){
-    const row_str = row.join(' ');
-    console.log(row_str);
+function fill_board(source) {
+  const cells = document.querySelectorAll('.cell');
+  
+  cells.forEach((cell, index) => {
+    const row = Math.floor(index / 9);
+    const col = index % 9;
+    cell.value = source[row][col] !== 0 ? source[row][col] : '';
+  });
 }
 
-const div_board = document.getElementById('board'); // Corrected line
+document.addEventListener('DOMContentLoaded', () => {
+  const board_ui = document.getElementById('board');
 
-for (let i = 0; i < 81; i++) {
-    let cell = document.createElement('div');
+  for (let i = 0; i < 81; i++) {
+    let cell = document.createElement('input');
+    cell.type = 'text';
+    cell.min = 1;
+    cell.max = 9;
+
+    // Calculate row and column indices
+    let row = Math.floor(i / 9);
+    let column = i % 9;
+
+    // Add data attributes
+    cell.setAttribute('data-row', row);
+    cell.setAttribute('data-column', column);
+
     cell.classList.add('cell');
-    div_board.appendChild(cell);
-}
+    board_ui.appendChild(cell);
+  }
 
+  // Fill the UI with values from the board
+  fill_board(board);
+});
