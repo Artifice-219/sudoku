@@ -124,6 +124,32 @@ function fill_board(source) {
   });
 }
 
+function hide_some_cells(source, repeat_count){
+
+  // ensure valid source
+  if(source.length === 0 || source.length[0] === 0){
+
+    console.error('invalid source parameter');
+    return;
+    
+  }
+
+  for(let i=0; i<=repeat_count; ++i){
+
+    const row_limit = source.length;
+    const col_limit = source[0].length;
+  
+    // generating "within bounds" row and columns
+    const row = Math.floor(Math.random() * row_limit);
+    const col = Math.floor(Math.random() * col_limit);
+  
+    source[row][col] = "";
+
+  }
+
+
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const board_ui = document.getElementById('board');
 
@@ -145,6 +171,10 @@ document.addEventListener('DOMContentLoaded', () => {
     board_ui.appendChild(cell);
   }
 
+    // hide some cells
+    hide_some_cells(board, 100);
+
   // Fill the UI with values from the board
   fill_board(board);
 });
+
