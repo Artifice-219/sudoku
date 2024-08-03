@@ -21,6 +21,7 @@ h1{
 
     position: absolute;
     font-family: Arial, Helvetica, sans-serif;
+    font-size: 5rem;
 }
 body{
 
@@ -33,19 +34,31 @@ body{
     position: relative;
     top: 100px;
     display: grid;
-    grid-template-columns: repeat(9, 40px); /* 9 columns each 40px wide */
-    grid-template-rows: repeat(9, 40px); /* 9 rows each 40px high */
-    gap: 1px; /* Small gap between cells */
+    grid-template-columns: repeat(9, 81px); /* 9 columns each */
+    grid-template-rows: repeat(9, 88px); /* 9 rows each  */
 }
 
 .cell{
 
-    width: 40px;
-    height: 40px;
+    width: 80px;
+    height: 85px;
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 1px solid #000; /* Border around each cell */
     font-size: 18px;
+    background-color: burlywood;
+    text-align: center;
+    font-size: 2.3rem;
+}
+
+.wrong{
+
+    /* just make the border red */
+    border: 5px solid red;
+}
+
+.correct{
+
+    border: 5px solid lightblue;
 }
 

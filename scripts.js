@@ -124,6 +124,10 @@ function fill_board(source) {
   });
 }
 
+// make a copy before hiding some values
+// make this in a more oop way
+const solution = JSON.parse(JSON.stringify(board));
+
 function hide_some_cells(source, repeat_count){
 
   // ensure valid source
@@ -142,12 +146,51 @@ function hide_some_cells(source, repeat_count){
     // generating "within bounds" row and columns
     const row = Math.floor(Math.random() * row_limit);
     const col = Math.floor(Math.random() * col_limit);
-  
+    // this is actually a bad implementation as it resets the value to ""
+    // instead of just hiding it
     source[row][col] = "";
 
   }
 
 
+}
+
+
+function main_game(source){
+
+ let cells = document.querySelectorAll('.cell');
+
+ cells.forEach((cell) => {
+
+  cell.addEventListener('input', (event) => {
+
+    const row = parseInt(event.target.getAttribute('data-row'));
+    const col = parseInt(event.target.getAttribute('data-column'));
+    const value = parseInt(event.target.value);
+
+    //  user validation
+ 
+    if(value >= 1 && value <= 9){
+      // compare user input with the values from the board at current location
+      if(value === source[row][col]){
+        
+        event.target.classList.add('correct');
+        console.log('correct');
+
+      }else{
+
+        // change the border color of the cell to red
+        event.target.classList.add('wrong');
+        console.log(`mismatch board value at this location is ${source[row][col]}`);
+
+      }
+    }else{
+
+        // reject that input by making the cell blank
+        event.target.value = "";
+    }
+  })
+ })
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -176,5 +219,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Fill the UI with values from the board
   fill_board(board);
+
+  // run the main game
+  main_game(solution);
 });
 
