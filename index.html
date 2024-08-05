@@ -5,12 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sudoku</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="modal-design.css">
 </head>
 <body>
     <h1>Sudoku Game</h1>
     <div class="board" id="board"></div>
 
+    <button class="user_control" id="reset_btn">Reset</button>
     <script src="scripts.js"></script>
     <!-- board creation -->
+
+<!-- THIS PART OF THE CODE IS 100% COPY PASTED FORM https://codepen.io/ismailvtl/pen/yLpNMQB -->
+
+    <div id="container">
+        <div class="container-inner">
+          <div class="content">
+            <p>Nice you solved it</p>
+          </div>
+          <div class="buttons">
+            <button type="button" class="confirm"> Lets do one more</button>
+            <button type="button" class="cancel">Cancel</button>
+          </div>
+        </div>
+      </div>
+
 </body>
 </html>

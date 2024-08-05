@@ -155,6 +155,69 @@ function hide_some_cells(source, repeat_count){
 
 }
 
+function make_read_only(){
+
+  let cells = document.querySelectorAll('.cell');
+
+  cells.forEach((cell) => {
+    // if value is non zero then make that cell readonly
+    let value = cell.value;
+
+    if(value !== ''){
+      cell.readOnly = true;
+    }
+  })
+}
+
+function check_win(board){
+
+  let length = board.length;
+
+  for(let row = 0; row <= length; ++row ){
+   for(let col = 0; col <= length; ++col){
+
+    if(board[row][col] === ''){
+      return false;
+    }
+   }
+  }
+
+  return true;
+
+}
+
+async function monitor_game(){
+  while(true){
+    // woit for 1 seconds
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    // retrieve  current game state
+    const board = [];
+    const cells = document.querySelectorAll('.cell');
+    for(let i = 0; i < 81; i++){
+      const row = Math.floor(i / 9);
+      const col = i % 9;
+      
+      if(!board[row][col]){
+
+        board[row] = [];
+      }
+      board[row][col] = cells[i].value !== ' ' ? parseInt( cells[i].value ) : 0;
+    }
+
+    if(check_win(board)){
+
+      alert('board solve');
+      
+      let pop_up = document.getElementById('container');
+      
+      pop_up.style.display ='block';
+      break;
+    }
+
+  }
+}
+
 
 function main_game(source){
 
@@ -195,6 +258,7 @@ function main_game(source){
 
 document.addEventListener('DOMContentLoaded', () => {
   const board_ui = document.getElementById('board');
+  let reset_button = document.getElementById('reset_btn');
 
   for (let i = 0; i < 81; i++) {
     let cell = document.createElement('input');
@@ -220,7 +284,21 @@ document.addEventListener('DOMContentLoaded', () => {
   // Fill the UI with values from the board
   fill_board(board);
 
+   // make visible values read only
+   make_read_only();
+
+
   // run the main game
   main_game(solution);
+
+  reset_button.addEventListener('click', () => {
+
+    window.location.reload();
+
+  })
+
+  // monitor the game
+  monitor_game();
+
 });
 
